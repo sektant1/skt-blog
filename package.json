@@ -18,7 +18,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.0.7",
-    "@sektant1/phosphor-ui": "^0.3.21",
+    "@sektant1/phosphor-ui": "^0.3.22",
     "@types/mdx": "^2.0.13",
     "bcryptjs": "^3.0.3",
     "fast-glob": "^3.3.3",

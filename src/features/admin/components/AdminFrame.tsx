@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { getAdminUser } from "@/lib/auth/session";
+import { localContentRepository } from "@/features/content/repositories/localContentRepository";
+import { logoutAction } from "../actions/auth";
 import { AdminFrameShell } from "./AdminFrameShell";
 
 export async function AdminFrame({ children }: { children: ReactNode }) {
@@ -10,5 +12,19 @@ export async function AdminFrame({ children }: { children: ReactNode }) {
     redirect("/admin/login");
   }
 
-  return <AdminFrameShell userName={user.username}>{children}</AdminFrameShell>;
+  const [posts, projects] = await Promise.all([
+    localContentRepository.list("post"),
+    localContentRepository.list("project"),
+  ]);
+
+  return (
+    <AdminFrameShell
+      userName={user.username}
+      posts={posts}
+      projects={projects}
+      onLogout={logoutAction}
+    >
+      {children}
+    </AdminFrameShell>
+  );
 }

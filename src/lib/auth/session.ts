@@ -69,13 +69,23 @@ export async function createAdminSession(username: string): Promise<void> {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    path: "/admin",
+    path: "/",
     maxAge: 60 * 60 * 8,
   });
 }
 
 export async function destroyAdminSession(): Promise<void> {
-  (await cookies()).delete(cookieName);
+  const cookieStore = await cookies();
+
+  cookieStore.delete({
+    name: cookieName,
+    path: "/",
+  });
+
+  cookieStore.delete({
+    name: cookieName,
+    path: "/admin",
+  });
 }
 
 export async function getAdminUser(): Promise<{ username: string } | null> {

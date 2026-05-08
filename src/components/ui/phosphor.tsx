@@ -32,10 +32,11 @@ export {
   RelatedPosts,
   Search,
   SeriesNav,
+  Tabs,
   Tag,
   TableOfContents,
   TerminalPrompt,
   Text,
   Textarea,
-  VideoPlayer
+  VideoPlayer,
 } from "@sektant1/phosphor-ui";
