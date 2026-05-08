@@ -1,0 +1,5 @@
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; }
+.card { display: grid; gap: 12px; min-width: 0; }
+.media { min-height: 130px; border: 1px dashed var(--phosphor-fade); display: grid; place-items: center; color: var(--phosphor-dim); font-family: var(--font-code); text-align: center; overflow-wrap: anywhere; padding: 12px; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.links { display: flex; flex-wrap: wrap; gap: 12px; }

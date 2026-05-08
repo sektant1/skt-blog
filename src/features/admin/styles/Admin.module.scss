@@ -1,0 +1,16 @@
+.stack { display: grid; gap: 20px; min-width: 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.editor { min-height: 55vh; font-family: var(--font-code); width: 100%; }
+.error { color: #ff6a6a; }
+
+@media (max-width: 480px) {
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .actions > * {
+    width: 100%;
+  }
+}

@@ -1,0 +1,143 @@
+@use "./tokens-overrides";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg, #020704);
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+:where(p, li, figcaption, blockquote, td, th, .mdx-card) {
+  overflow-wrap: anywhere;
+}
+
+.mdx-image-frame {
+  margin: 24px 0;
+  border: 1px dashed var(--phosphor-fade);
+  padding: 8px;
+}
+
+.mdx-image-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mdx-image-frame figcaption,
+.mdx-card {
+  font-family: var(--font-code);
+  color: var(--phosphor-dim);
+}
+
+.mdx-card {
+  border: 1px solid var(--phosphor-fade);
+  padding: 16px;
+  margin: 18px 0;
+  min-width: 0;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-family: var(--font-code);
+}
+
+form {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .pho-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .pho-header .tagline {
+    width: 100%;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .pho-header .header-toolbar {
+    padding-inline: 0.35rem;
+  }
+
+  .pho-header .boot-nav,
+  .pho-header .boot-nav ul,
+  .pho-header .locale-switch {
+    width: 100%;
+  }
+
+  .pho-header .boot-nav .nav-item a {
+    padding-inline: 0.48rem;
+  }
+
+  .pho-prose {
+    max-width: 100%;
+    font-size: 0.96rem;
+  }
+
+  .pho-prose h1,
+  .pho-prose h2,
+  .pho-prose h3,
+  .pho-prose h4,
+  .pho-prose h5,
+  .pho-prose h6 {
+    overflow-wrap: anywhere;
+  }
+
+  .pho-prose h2 {
+    align-items: flex-start;
+    gap: 0.35ch;
+  }
+
+  .pho-prose h2::after {
+    min-width: 2ch;
+  }
+}
+
+@media (max-width: 480px) {
+  .Button-module_btn__daEdK {
+    width: 100%;
+  }
+
+  .pho-search-hit a {
+    grid-template-columns: 1fr;
+  }
+
+  .pho-search-hit .hit-tags {
+    overflow-wrap: anywhere;
+  }
+
+  .mdx-card {
+    padding: 12px;
+  }
+}

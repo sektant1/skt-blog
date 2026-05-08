@@ -1,0 +1,1 @@
+export { BlogIndexPage } from "./BlogIndexPage";

@@ -1,0 +1,68 @@
+.stack {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.hero {
+  min-width: 0;
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.section {
+  margin-top: 2rem;
+}
+
+.intro {
+  color: var(--phosphor-dim);
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .stack {
+    gap: 1.35rem;
+  }
+
+  .section {
+    margin-top: 1.25rem;
+  }
+
+  .hero :global([class*="HeroFrame-module_artWrap__"]) {
+    min-height: 11rem;
+  }
+
+  .hero :global([class*="HeroFrame-module_art__"]) {
+    display: none;
+  }
+
+  .hero :global([class*="HeroFrame-module_artWrap__"])::before {
+    content: "SEKTANT\A HIDEOUT";
+    position: relative;
+    z-index: 1;
+    white-space: pre;
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 13vw, 4.2rem);
+    font-weight: 700;
+    line-height: 0.9;
+    text-align: center;
+    color: var(--phosphor-bright);
+    text-shadow: 0 0 1px var(--phosphor), 0 0 8px rgba(44, 255, 122, 0.55), 0 0 20px rgba(44, 255, 122, 0.25);
+  }
+}
+
+@media (max-width: 420px) {
+  .cluster {
+    gap: 6px;
+  }
+}

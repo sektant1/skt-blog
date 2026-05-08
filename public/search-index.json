@@ -1,0 +1,36 @@
+[
+  {
+    "id": "post:hello-hideout",
+    "type": "post",
+    "title": "Hello Hideout",
+    "description": "Opening note for the personal technical archive.",
+    "slug": "hello-hideout",
+    "href": "/blog/hello-hideout",
+    "tags": [
+      "meta",
+      "archive",
+      "nextjs"
+    ],
+    "series": "hideout-build-log",
+    "bodyExcerpt": "Boot sequence This is the first replaceable note in the hideout. It exists to prove the content layer, post route, series index, search index, and MDX renderer all agree on the sam...",
+    "date": "2026-05-08"
+  },
+  {
+    "id": "project:monad-engine",
+    "type": "project",
+    "title": "Monad Engine",
+    "description": "A compact engine experiment for rendering and systems notes.",
+    "slug": "monad-engine",
+    "href": "/projects/monad-engine",
+    "tags": [
+      "engine",
+      "graphics",
+      "cpp",
+      "C++",
+      "OpenGL",
+      "GLFW"
+    ],
+    "bodyExcerpt": "What it is Monad Engine is placeholder portfolio content for the first version of the site. The real entry can become a README like breakdown with screenshots, technical notes, and...",
+    "date": "2026-05-08"
+  }
+]
