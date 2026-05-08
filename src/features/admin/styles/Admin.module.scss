@@ -1,8 +1,59 @@
-.stack { display: grid; gap: 20px; min-width: 0; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.editor { min-height: 55vh; font-family: var(--font-code); width: 100%; }
-.error { color: #ff6a6a; }
+.stack {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 18px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.editor {
+  min-height: 55vh;
+  font-family: var(--font-code);
+  width: 100%;
+}
+
+.error {
+  color: #ff6a6a;
+}
+
+.secondaryAction {
+  display: inline-flex;
+  font-size: 0.86rem;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.86;
+  transition:
+    border-color 140ms ease,
+    color 140ms ease,
+    opacity 140ms ease,
+    background-color 140ms ease;
+}
+
+.secondaryAction:hover,
+.secondaryAction:focus-visible {
+  border-color: var(--phosphor, #62ff9a);
+  color: var(--phosphor, #62ff9a);
+  background: rgba(98, 255, 154, 0.07);
+  opacity: 1;
+  outline: none;
+}
+
+.secondaryAction:focus-visible {
+  box-shadow: 0 0 0 2px rgba(98, 255, 154, 0.22);
+}
 
 @media (max-width: 480px) {
   .actions {
@@ -10,7 +61,7 @@
     flex-direction: column;
   }
 
-  .actions > * {
+  .actions>* {
     width: 100%;
   }
 }

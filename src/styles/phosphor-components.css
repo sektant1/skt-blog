@@ -5,14 +5,15 @@
  */
 .Button-module_btn__daEdK {
   font-family: var(--font-terminal);
-  font-size: 17px;
+  font-size: 15px;
   background: transparent;
   border: 1px solid var(--phosphor);
   color: var(--phosphor);
   text-shadow: var(--glow-emerald);
-  padding: 6px 14px;
+  padding: 0px 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  text-decoration: none;
   cursor: pointer;
   border-radius: 0;
 }

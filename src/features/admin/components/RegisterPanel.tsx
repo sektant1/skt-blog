@@ -9,15 +9,20 @@ import {
   PdaWindow,
   Text,
 } from "@/components/ui/phosphor";
-import { loginAction } from "../actions/auth";
+import { registerAction } from "../actions/auth";
 import styles from "../styles/Admin.module.scss";
 
-export function LoginPanel() {
-  const [error, action, pending] = useActionState(loginAction, null);
+export function RegisterPanel() {
+  const [error, action, pending] = useActionState(registerAction, null);
 
   return (
-    <PdaWindow title="admin login" meta="localhost only">
+    <PdaWindow title="admin register" meta="localhost only">
       <form action={action} className={styles.stack}>
+        <Text as="p" variant="body">
+          Create a local admin account. The first account can always be created
+          on localhost. More accounts require ADMIN_REGISTRATION_ENABLED=true.
+        </Text>
+
         <FormField label="Username">
           <Input name="username" autoComplete="username" required />
         </FormField>
@@ -26,7 +31,16 @@ export function LoginPanel() {
           <Input
             name="password"
             type="password"
-            autoComplete="current-password"
+            autoComplete="new-password"
+            required
+          />
+        </FormField>
+
+        <FormField label="Confirm password">
+          <Input
+            name="passwordConfirm"
+            type="password"
+            autoComplete="new-password"
             required
           />
         </FormField>
@@ -39,15 +53,15 @@ export function LoginPanel() {
 
         <div className={styles.actions}>
           <Button type="submit" disabled={pending}>
-            {pending ? "checking" : "login"}
+            {pending ? "creating" : "register"}
           </Button>
 
           <Button
             variant="ghost"
-            href="/admin/register"
+            href="/admin/login"
             className={styles.secondaryAction}
           >
-            register local admin
+            login instead
           </Button>
         </div>
       </form>

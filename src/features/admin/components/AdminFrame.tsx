@@ -1,20 +1,14 @@
+import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/ui/phosphor";
 import { getAdminUser } from "@/lib/auth/session";
-import { logoutAction } from "../actions/auth";
+import { AdminFrameShell } from "./AdminFrameShell";
 
-const nav = [
-  { label: "dashboard", href: "/admin/dashboard", glyph: ">" },
-  { label: "posts", href: "/admin/posts", glyph: "#" },
-  { label: "projects", href: "/admin/projects", glyph: "*" }
-];
-
-export async function AdminFrame({ children }: { children: React.ReactNode }) {
+export async function AdminFrame({ children }: { children: ReactNode }) {
   const user = await getAdminUser();
-  if (!user) redirect("/admin/login");
-  return (
-    <AdminShell title="hideout admin" nav={nav} user={{ name: user.username, role: "local" }} onLogout={logoutAction}>
-      {children}
-    </AdminShell>
-  );
+
+  if (!user) {
+    redirect("/admin/login");
+  }
+
+  return <AdminFrameShell userName={user.username}>{children}</AdminFrameShell>;
 }
