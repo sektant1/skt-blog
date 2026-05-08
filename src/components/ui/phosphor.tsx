@@ -33,6 +33,7 @@ export {
   Search,
   SeriesNav,
   Tag,
+  TableOfContents,
   TerminalPrompt,
   Text,
   Textarea,

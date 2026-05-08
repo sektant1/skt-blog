@@ -1,4 +1,5 @@
 import { Callout, CodeBlock, H1, H2, H3, Hr, Link, PostBody, Text } from "@/components/ui/phosphor";
+import { cleanMdxHeadingText, createHeadingSlugger } from "./headings";
 
 function inline(text: string) {
   const parts = text.split(/(`[^`]+`|\[[^\]]+\]\([^)]+\))/g);
@@ -14,6 +15,7 @@ export function MdxRenderer({ source }: { source: string }) {
   const blocks = source.split(/\n{2,}/);
   const codeFence: { lang: string; lines: string[] } | null = null;
   const nodes: React.ReactNode[] = [];
+  const headingId = createHeadingSlugger();
 
   for (const block of blocks) {
     if (block.startsWith("```")) {
@@ -22,10 +24,16 @@ export function MdxRenderer({ source }: { source: string }) {
       continue;
     }
     if (codeFence) continue;
-    if (block.startsWith("# ")) nodes.push(<H1 key={nodes.length}>{inline(block.slice(2))}</H1>);
-    else if (block.startsWith("## ")) nodes.push(<H2 key={nodes.length}>{inline(block.slice(3))}</H2>);
-    else if (block.startsWith("### ")) nodes.push(<H3 key={nodes.length}>{inline(block.slice(4))}</H3>);
-    else if (block.startsWith("> ")) nodes.push(<Callout key={nodes.length} variant="quote">{inline(block.replace(/^> /gm, ""))}</Callout>);
+    if (block.startsWith("# ")) {
+      const text = cleanMdxHeadingText(block.slice(2));
+      nodes.push(<H1 key={nodes.length} id={headingId(text)}>{inline(text)}</H1>);
+    } else if (block.startsWith("## ")) {
+      const text = cleanMdxHeadingText(block.slice(3));
+      nodes.push(<H2 key={nodes.length} id={headingId(text)}>{inline(text)}</H2>);
+    } else if (block.startsWith("### ")) {
+      const text = cleanMdxHeadingText(block.slice(4));
+      nodes.push(<H3 key={nodes.length} id={headingId(text)}>{inline(text)}</H3>);
+    } else if (block.startsWith("> ")) nodes.push(<Callout key={nodes.length} variant="quote">{inline(block.replace(/^> /gm, ""))}</Callout>);
     else if (block.trim() === "---") nodes.push(<Hr key={nodes.length} />);
     else if (block.startsWith("- ")) {
       nodes.push(

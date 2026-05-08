@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
-import { PostHeader, PostLayout, RelatedPosts, SeriesNav } from "@/components/ui/phosphor";
+import { PostHeader, PostLayout, RelatedPosts, SeriesNav, TableOfContents } from "@/components/ui/phosphor";
 import { MdxRenderer } from "@/components/mdx/MdxRenderer";
+import { buildMdxTocItems, extractMdxHeadings } from "@/components/mdx/headings";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getAllPosts, getPostBySlug, getSeriesBySlug } from "@/features/content/loaders/posts";
 import { blogPostingJsonLd } from "@/lib/seo/jsonLd";
@@ -18,6 +19,8 @@ export async function BlogPostPage({ slug }: { slug: string }) {
     .filter((item) => item.slug !== post.slug && item.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3)
     .map((item) => ({ href: `/blog/${item.slug}`, title: item.title, date: item.date, tags: item.tags }));
+  const tocHeadings = extractMdxHeadings(post.body).filter((heading) => heading.depth === 2 || heading.depth === 3);
+  const tocItems = buildMdxTocItems(tocHeadings);
   return (
     <PostLayout
       className={styles.stack}
@@ -32,6 +35,16 @@ export async function BlogPostPage({ slug }: { slug: string }) {
           tags={post.tags}
         />
       }
+      sidebar={
+        tocItems.length ? (
+          <TableOfContents
+            items={tocItems}
+            foot={<span>{tocHeadings.length} nodes</span>}
+            spyOffset={120}
+          />
+        ) : null
+      }
+      sidebarLabel="post table of contents"
       footer={
         <>
           {series && seriesIndex >= 0 ? (
