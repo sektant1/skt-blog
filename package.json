@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "npm run content:check && npm run search:index && next build --webpack",
+    "build": "npm run content:sync && npm run content:check && npm run search:index && next build --webpack",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "phosphor:css": "node scripts/extract-phosphor-css.mjs",
     "content:check": "tsx scripts/check-content.ts",
+    "content:sync": "tsx scripts/sync-content.ts",
     "search:index": "tsx scripts/generate-search-index.ts"
   },
   "dependencies": {

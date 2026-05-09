@@ -1,6 +1,6 @@
 # sektant's hideout
 
-Private personal site for technical posts, project notes, series, search, and a localhost-only filesystem admin CMS.
+Private personal site for technical posts, project notes, series, search, and a localhost-first admin CMS.
 
 ## Install
 
@@ -76,7 +76,19 @@ LOCAL_ADMIN_ONLY=true
 
 Generate a bcrypt hash in your own shell, then put it in `.env.local`.
 
-All admin writes go through `ContentRepository`. V1 uses the local filesystem repository. A typed GitHub repository-backed CMS placeholder exists for future production writes.
+All admin writes go through `ContentRepository`. The default backend is the local filesystem. Set `CONTENT_BACKEND=github` to store content in GitHub through the repository interface.
+
+For the GitHub backend, set:
+
+```env
+CONTENT_BACKEND=github
+GITHUB_TOKEN=
+GITHUB_OWNER=
+GITHUB_REPO=
+GITHUB_BRANCH=main
+```
+
+`GITHUB_TOKEN` must be able to read and write repository contents. Keep `LOCAL_ADMIN_ONLY=true` unless you intentionally want the hosted app to expose admin routes.
 
 ## Search
 
@@ -90,4 +102,50 @@ The generated file is `public/search-index.json` and includes published posts an
 
 ## Deployment
 
-Public pages are statically generated where possible. Keep admin environment variables out of the client. A future GitHub-backed CMS can use the placeholder env vars in `.env.example`.
+Public pages are statically generated where possible. Keep admin environment variables out of the client.
+
+This repo deploys from GitHub to Vercel with GitHub Actions and the Vercel CLI.
+
+One-time setup:
+
+1. Create the project on Vercel from your local shell:
+
+   ```bash
+   npx vercel login
+   npx vercel
+   ```
+
+2. In Vercel, add production/preview environment variables:
+
+   ```env
+   CONTENT_BACKEND=github
+   GITHUB_TOKEN=
+   GITHUB_OWNER=
+   GITHUB_REPO=
+   GITHUB_BRANCH=main
+   GITHUB_PACKAGES_TOKEN=
+   SITE_URL=https://your-domain.example
+   AUTH_SECRET=
+   ADMIN_USERNAME=
+   ADMIN_PASSWORD_HASH=
+   LOCAL_ADMIN_ONLY=true
+   ADMIN_REGISTRATION_ENABLED=false
+   ```
+
+3. In GitHub, add repository Actions secrets:
+
+   ```env
+   VERCEL_TOKEN=
+   VERCEL_ORG_ID=
+   VERCEL_PROJECT_ID=
+   GH_PACKAGES_TOKEN=
+   ```
+
+   `VERCEL_TOKEN` comes from Vercel account tokens. `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` are written to `.vercel/project.json` after `npx vercel` links the project.
+   `GH_PACKAGES_TOKEN` is optional if the workflow `GITHUB_TOKEN` can read `@sektant1/phosphor-ui`; otherwise set it to a GitHub token with `read:packages`.
+
+4. Push to GitHub. `.github/workflows/vercel.yml` deploys non-default branches as preview deployments and the default branch as production.
+
+When `CONTENT_BACKEND=github`, `npm run build` runs `content:sync` before validation, search indexing, and `next build`, so the build uses the latest `content/**` from GitHub.
+
+`VERCEL_DEPLOY_HOOK_URL` is optional in this CI setup. Admin content writes create GitHub commits, and those commits should trigger the GitHub Actions workflow. Use a Vercel Deploy Hook only if you also configure one explicitly for the project.

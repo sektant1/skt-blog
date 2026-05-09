@@ -254,7 +254,7 @@ function renderMarkdownBlocks(
     if (headingMatch) {
       const level = headingMatch[1].length;
       const text = headingMatch[2];
-      const tag = `h${level}` as keyof JSX.IntrinsicElements;
+      const tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
       blocks.push(
         React.createElement(

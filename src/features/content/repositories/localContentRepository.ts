@@ -2,7 +2,15 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import { assertValidSlug, contentKindDir, resolveInsideContent } from "../paths";
-import type { ContentFile, ContentKind, ContentRepository, ContentSummary, ContentWriteInput } from "./contentRepository";
+import type {
+  ContentAssetWriteInput,
+  ContentAssetWriteResult,
+  ContentFile,
+  ContentKind,
+  ContentRepository,
+  ContentSummary,
+  ContentWriteInput,
+} from "./contentRepository";
 
 function dirName(kind: ContentKind): "posts" | "projects" | "pages" {
   if (kind === "post") return "posts";
@@ -60,6 +68,31 @@ export class LocalContentRepository implements ContentRepository {
   async delete(kind: ContentKind, slug: string): Promise<void> {
     const file = contentPath(kind, slug);
     await fs.rm(path.dirname(file), { recursive: true, force: true });
+  }
+
+  async writeAsset(
+    input: ContentAssetWriteInput,
+  ): Promise<ContentAssetWriteResult> {
+    const directory = resolveInsideContent(
+      dirName(input.kind),
+      input.slug,
+      "images",
+    );
+    const file = resolveInsideContent(
+      dirName(input.kind),
+      input.slug,
+      "images",
+      input.fileName,
+    );
+
+    await fs.mkdir(directory, { recursive: true });
+    await fs.writeFile(file, input.bytes);
+
+    return {
+      fileName: input.fileName,
+      markdownPath: `./images/${input.fileName}`,
+      assetUrl: `/api/admin/content-asset/${input.kind}/${input.slug}/images/${input.fileName}`,
+    };
   }
 }
 

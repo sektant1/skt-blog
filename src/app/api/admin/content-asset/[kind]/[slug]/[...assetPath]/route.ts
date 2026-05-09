@@ -3,6 +3,10 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 import { assertLocalAdminAllowed, getAdminUser } from "@/lib/auth/session";
 import { assertValidSlug, contentKindDir } from "@/features/content/paths";
+import {
+  githubAssetPath,
+  readGithubFileBytes,
+} from "@/features/content/repositories/githubContentRepository";
 import type { ContentKind } from "@/features/content/repositories/contentRepository";
 
 export const dynamic = "force-dynamic";
@@ -85,6 +89,32 @@ export async function GET(
     return new NextResponse("Unsupported asset type", { status: 415 });
   }
 
+  if (process.env.CONTENT_BACKEND === "github") {
+    let filePath: string;
+
+    try {
+      filePath = githubAssetPath(kind, params.slug, params.assetPath);
+    } catch {
+      return new NextResponse("Invalid asset path", { status: 400 });
+    }
+
+    const file = await readGithubFileBytes(filePath);
+
+    if (!file) {
+      return new NextResponse("Asset not found", { status: 404 });
+    }
+
+    const body = new ArrayBuffer(file.byteLength);
+    new Uint8Array(body).set(file);
+
+    return new NextResponse(body, {
+      status: 200,
+      headers: {
+        "Content-Type": contentType,
+        "Cache-Control": "no-store",
+      },
+    });
+  }
   const contentRoot = path.join(contentKindDir(kind), params.slug);
   const targetPath = path.resolve(contentRoot, ...params.assetPath);
   const relativePath = path.relative(contentRoot, targetPath);

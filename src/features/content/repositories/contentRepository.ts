@@ -23,9 +23,24 @@ export type ContentWriteInput = {
   raw: string;
 };
 
+export type ContentAssetWriteInput = {
+  kind: ContentKind;
+  slug: string;
+  fileName: string;
+  bytes: Uint8Array;
+  contentType: string;
+};
+
+export type ContentAssetWriteResult = {
+  fileName: string;
+  markdownPath: string;
+  assetUrl: string;
+};
+
 export interface ContentRepository {
   list(kind: ContentKind): Promise<ContentSummary[]>;
   read(kind: ContentKind, slug: string): Promise<ContentFile | null>;
   write(input: ContentWriteInput): Promise<void>;
   delete(kind: ContentKind, slug: string): Promise<void>;
+  writeAsset(input: ContentAssetWriteInput): Promise<ContentAssetWriteResult>;
 }

@@ -3,6 +3,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 import { assertLocalAdminAllowed, getAdminUser } from "@/lib/auth/session";
 import { assertValidSlug, contentKindDir } from "@/features/content/paths";
+import { getContentRepository } from "@/features/content/repositories/getContentRepository";
 import type { ContentKind } from "@/features/content/repositories/contentRepository";
 
 export const dynamic = "force-dynamic";
@@ -116,14 +117,30 @@ export async function POST(
     });
   }
 
+  const safeFileName = sanitizeFileName(file.name, file.type);
+  const bytes = new Uint8Array(await file.arrayBuffer());
+
+  if (process.env.CONTENT_BACKEND === "github") {
+    const result = await getContentRepository().writeAsset({
+      kind,
+      slug: params.slug,
+      fileName: safeFileName,
+      bytes,
+      contentType: file.type,
+    });
+
+    return NextResponse.json({
+      filename: result.fileName,
+      markdownPath: result.markdownPath,
+      assetUrl: result.assetUrl,
+    });
+  }
   const contentRoot = path.join(contentKindDir(kind), params.slug);
   const imagesDirectory = path.join(contentRoot, "images");
-  const safeFileName = sanitizeFileName(file.name, file.type);
 
   await fs.mkdir(imagesDirectory, { recursive: true });
 
   const target = await uniqueFilePath(imagesDirectory, safeFileName);
-  const bytes = new Uint8Array(await file.arrayBuffer());
 
   await fs.writeFile(target.filePath, bytes);
 
